@@ -15,10 +15,16 @@ import javafx.scene.text.Text;
 import sample.data.UserType;
 import sample.data.UserTypeDAO;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class MainForm extends GridPane {
 
     private final String LOGIN = "Beaver";
-    private final String PASSWORD = "qwe123";
+    private final String PASSWORD = "200820e3227815ed1756a6b531e7e0d2";
+
+    private static final char[] HEX_ARRAY = "0123456789abcdef".toCharArray();
 
     public MainForm() {
         this.setAlignment(Pos.CENTER);
@@ -69,7 +75,7 @@ public class MainForm extends GridPane {
 
             @Override
             public void handle(ActionEvent e) {
-                if (userTextField.getText().equals(LOGIN) && passwordField.getText().equals(PASSWORD)) {
+                if (userTextField.getText().equals(LOGIN) && hashMD5(passwordField.getText()).equals(PASSWORD)) {
                     resultLabel.setFill(Color.BLUE);
 
                     UserType currentUserType = userTypeComboBox.getSelectionModel().getSelectedItem();
@@ -81,6 +87,28 @@ public class MainForm extends GridPane {
                 }
             }
         });
+    }
+
+    private String hashMD5(String text) {
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hash);
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int i = 0; i < bytes.length; i++) {
+            int number = bytes[i] & 0xFF;
+            hexChars[i * 2] = HEX_ARRAY[number >>> 4];
+            hexChars[i * 2 + 1] = HEX_ARRAY[number & 0x0F];
+        }
+        return new String(hexChars);
     }
 
 }

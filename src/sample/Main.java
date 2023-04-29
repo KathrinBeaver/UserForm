@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("Main Form");
         Scene scene = new Scene(new MainForm(), 300, 275);
         primaryStage.setScene(scene);

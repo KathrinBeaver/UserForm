@@ -8,8 +8,7 @@ public class UserTypeDAO {
         UserType student = new UserType("std", "Student");
         UserType teacher = new UserType("tch", "Teacher");
 
-        ObservableList<UserType> list //
-                = FXCollections.observableArrayList(student, teacher);
+        ObservableList<UserType> list = FXCollections.observableArrayList(student, teacher);
 
         return list;
     }
